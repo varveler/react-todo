@@ -1,16 +1,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { TextField } from '@material-ui/core';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 
+import TodoForm from './TodoForm';
+import TodoList from './TodoList';
 
 class App extends React.Component {
   constructor(props){
@@ -75,41 +68,19 @@ class App extends React.Component {
         </Typography>
         <Grid container justify='center'>
           <Grid item>
-            <form onSubmit={e => {
-              e.preventDefault();
-              {/*console.log(e.target);  e.target es el padre que llama el evento */}
-              this.saveTodo()
-
-            }}>
-              <TextField
-                label='nueva tarea'
-                type='text'
-                placeholder='pasear al gato'
-                value = {this.state.value}
-                onChange = {this.updateValue}
-              />
-            </form>
+            <TodoForm
+              updateValue={this.updateValue}
+              saveTodo={this.saveTodo}
+              value={this.state.value}
+            />
           </Grid>
         </Grid>
         <Grid container justify='center'>
           <Grid item md={6}>
-          <List>
-            {
-              this.state.todos.map((item, index) => {
-              return(
-                <ListItem button key={index} onClick={()=>this.toggledCompleted(index)}>
-                  <Checkbox color='primary' checked={item.completed}/>
-                  <ListItemText primary={item.value} />
-                  <ListItemSecondaryAction>
-                    <IconButton onClick={()=>this.deleteTodo(index)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              )
-            })
-            }
-            </List>
+            <TodoList
+            todos={this.state.todos}
+            toggledCompleted={this.toggledCompleted}
+            deleteTodo={this.deleteTodo} />
           </Grid>
         </Grid>
       </React.Fragment>
