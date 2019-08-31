@@ -33,10 +33,20 @@ class App extends React.Component {
         todos: [...this.state.todos, this.state.value],
         value : ''
       });
+    }
   }
+  deleteTodo = (index) => {
+    //imperative
+    // const todos = [...this.state.todos]
+    // todos.splice(index,1);
+    // this.setState({todos});
+    //declarative
+    this.setState({
+      todos: this.state.todos.filter((_, i) => index !== i) //es seguro usar filter porque no muta el estado arroja un nuevo string
+    });
   }
   render(){
-    console.log(this.state.todos);
+  {/*  console.log(this.state.todos); */}
     return (
       <React.Fragment>
         <Typography variant='h2' align='center' gutterBottom>
@@ -61,7 +71,7 @@ class App extends React.Component {
           </Grid>
         </Grid>
         <Grid container justify='center'>
-          <Grid item md={8}>
+          <Grid item md={6}>
           <List>
             {
               this.state.todos.map((item, index) => {
@@ -70,7 +80,7 @@ class App extends React.Component {
                   <Checkbox />
                   <ListItemText primary={item} />
                   <ListItemSecondaryAction>
-                    <IconButton>
+                    <IconButton onClick={()=>this.deleteTodo(index)}>
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
