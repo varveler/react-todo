@@ -30,8 +30,14 @@ class App extends React.Component {
   saveTodo = () => {
     if(this.state.value.trim()){
       this.setState({
-        todos: [...this.state.todos, this.state.value],
-        value : ''
+        todos: [
+          ...this.state.todos,
+          {
+          value: this.state.value,
+          completed: false
+          }
+        ],
+        value: ''
       });
     }
   }
@@ -45,6 +51,21 @@ class App extends React.Component {
       todos: this.state.todos.filter((_, i) => index !== i) //es seguro usar filter porque no muta el estado arroja un nuevo string
     });
   }
+  toggledCompleted = index => {
+    //console.log(index)
+    // Imperative
+    // const todos = [... this.state.todos]
+    // todos[index].completed = !todos[index].completed
+    // this.setState({
+    //   todos: todos
+    // })
+    // declarative
+    this.setState({
+      todos: this.state.todos.map((todo, i) =>
+        index === i ? {...todo, completed: !todo.completed } : todo
+      )
+    });
+  };
   render(){
   {/*  console.log(this.state.todos); */}
     return (
@@ -76,9 +97,9 @@ class App extends React.Component {
             {
               this.state.todos.map((item, index) => {
               return(
-                <ListItem button key={index}>
-                  <Checkbox />
-                  <ListItemText primary={item} />
+                <ListItem button key={index} onClick={()=>this.toggledCompleted(index)}>
+                  <Checkbox color='primary' checked={item.completed}/>
+                  <ListItemText primary={item.value} />
                   <ListItemSecondaryAction>
                     <IconButton onClick={()=>this.deleteTodo(index)}>
                       <DeleteIcon />
